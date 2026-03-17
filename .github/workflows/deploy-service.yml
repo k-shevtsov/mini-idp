@@ -1,0 +1,86 @@
+name: Deploy Service to K8s
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: 'Service name'
+        required: true
+      image:
+        description: 'Docker image (e.g. nginx:1.25)'
+        required: true
+        default: 'nginx:1.25'
+      replicas:
+        description: 'Number of replicas'
+        required: true
+        default: '2'
+      namespace:
+        description: 'Target namespace'
+        required: true
+        default: 'default'
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'dev'
+      port_run_id:
+        description: 'Port Run ID'
+        required: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Report deployment started
+        if: ${{ inputs.port_run_id != '' }}
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          operation: PATCH_RUN
+          runId: ${{ inputs.port_run_id }}
+          logMessage: "🚀 Starting deployment of ${{ inputs.service_name }}..."
+
+      - name: Generate K8s manifest
+        run: |
+          mkdir -p manifests
+          cat > manifests/deployment.yaml << MANIFEST
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: ${{ inputs.service_name }}
+            namespace: ${{ inputs.namespace }}
+            labels:
+              app: ${{ inputs.service_name }}
+              env: ${{ inputs.environment }}
+          spec:
+            replicas: ${{ inputs.replicas }}
+            selector:
+              matchLabels:
+                app: ${{ inputs.service_name }}
+            template:
+              metadata:
+                labels:
+                  app: ${{ inputs.service_name }}
+              spec:
+                containers:
+                  - name: ${{ inputs.service_name }}
+                    image: ${{ inputs.image }}
+                    ports:
+                      - containerPort: 80
+          MANIFEST
+          echo "✅ Generated manifest:"
+          cat manifests/deployment.yaml
+
+      - name: Report success
+        if: ${{ inputs.port_run_id != '' }}
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          operation: PATCH_RUN
+          runId: ${{ inputs.port_run_id }}
+          status: SUCCESS
+          logMessage: "✅ ${{ inputs.service_name }} deployed successfully!"
