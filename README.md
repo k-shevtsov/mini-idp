@@ -87,14 +87,16 @@ helm install port-k8s-exporter port-labs/port-k8s-exporter \
 ## 📸 Screenshots
 
 ### Software Catalog — K8s Workloads
-> Real-time view of all workloads running in the cluster<img width="621" height="584" alt="Screenshot from 2026-03-17 22-53-20" src="https://github.com/user-attachments/assets/8f25cd1f-303c-47d3-8543-b02ba2596048" />
-
+> Real-time view of all workloads running in the cluster
+<img width="1215" height="359" alt="Screenshot from 2026-03-17 22-45-36" src="https://github.com/user-attachments/assets/a4a0c74c-dabf-4088-9bd1-13dd93c3f752" />
 
 ### Self-service — Deploy Service
 > One-click deployment form with built-in guardrails
+<img width="621" height="584" alt="Screenshot from 2026-03-17 22-53-20" src="https://github.com/user-attachments/assets/b1a4de50-b754-4d8b-b41d-4d4b80e23459" />
 
 ### Deployment Log Stream
 > Real-time feedback directly in Port UI
+<img width="1398" height="552" alt="Screenshot from 2026-03-17 22-49-55" src="https://github.com/user-attachments/assets/a8b17c7e-ac2c-4c08-b00b-7c4e409dec4f" />
 
 ## 🔮 Future Improvements
 
