@@ -28,7 +28,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,9 +70,28 @@ jobs:
                     image: ${{ inputs.image }}
                     ports:
                       - containerPort: 80
+                    readinessProbe:
+                      httpGet:
+                        path: /
+                        port: 80
+                      initialDelaySeconds: 5
+                      periodSeconds: 10
           MANIFEST
           echo "✅ Generated manifest:"
           cat manifests/deployment.yaml
+
+      - name: Apply to Kubernetes
+        run: |
+          kubectl apply -f manifests/deployment.yaml
+          echo "⏳ Waiting for rollout..."
+          kubectl rollout status deployment/${{ inputs.service_name }} -n ${{ inputs.namespace }} --timeout=60s
+
+      - name: Verify deployment
+        run: |
+          echo "📦 Pods status:"
+          kubectl get pods -n ${{ inputs.namespace }} -l app=${{ inputs.service_name }}
+          echo "🔍 Deployment details:"
+          kubectl get deployment ${{ inputs.service_name }} -n ${{ inputs.namespace }}
 
       - name: Report success
         if: ${{ inputs.port_run_id != '' }}
@@ -83,4 +102,4 @@ jobs:
           operation: PATCH_RUN
           runId: ${{ inputs.port_run_id }}
           status: SUCCESS
-          logMessage: "✅ ${{ inputs.service_name }} deployed successfully!"
+          logMessage: "✅ ${{ inputs.service_name }} deployed successfully to ${{ inputs.namespace }}!"
