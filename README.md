@@ -3,20 +3,20 @@
 A self-service Kubernetes deployment portal built with **Port.io** and **GitHub Actions**.  
 Developers can deploy services to Kubernetes through a UI form — no `kubectl` required.
 
-## 📐 Architecture
+## Architecture
 ```
 Developer → Port.io UI → GitHub Actions → Kubernetes Cluster (kind)
 ```
 
-## ✨ Features
+## Features
 
-- 📦 **Software Catalog** — real-time visibility into K8s Workloads, Pods, Nodes, Namespaces
-- 🚀 **Self-service Deployments** — deploy any service via UI form with guardrails
-- 📊 **Production Readiness Scorecards** — track service maturity (owner, repo, on-call)
-- 🔄 **Real-time status reporting** — deployment logs streamed back to Port UI
-- 🔗 **GitHub Integration** — repositories and PRs visible in the catalog
+-  **Software Catalog** — real-time visibility into K8s Workloads, Pods, Nodes, Namespaces
+-  **Self-service Deployments** — deploy any service via UI form with guardrails
+-  **Production Readiness Scorecards** — track service maturity (owner, repo, on-call)
+-  **Real-time status reporting** — deployment logs streamed back to Port UI
+-  **GitHub Integration** — repositories and PRs visible in the catalog
 
-## 🛠️ Stack
+## Stack
 
 | Tool | Purpose |
 |---|---|
@@ -26,7 +26,7 @@ Developer → Port.io UI → GitHub Actions → Kubernetes Cluster (kind)
 | [Helm](https://helm.sh/) | Kubernetes package manager |
 | [kubectl](https://kubernetes.io/docs/reference/kubectl/) | Cluster management |
 
-## 🏗️ Project Structure
+## Project Structure
 ```
 mini-idp/
 ├── .github/
@@ -38,7 +38,7 @@ mini-idp/
 └── kind-cluster.yaml            # Local K8s cluster config
 ```
 
-## 🚀 How It Works
+## How It Works
 
 1. Developer opens **Port → Self-service → 🚀 Deploy Service**
 2. Fills in the form: service name, Docker image, replicas, namespace, environment
@@ -84,7 +84,7 @@ helm install port-k8s-exporter port-labs/port-k8s-exporter \
   --set "extraEnv[0].value=mini-idp"
 ```
 
-## 📸 Screenshots
+## Screenshots
 
 ### Software Catalog — K8s Workloads
 > Real-time view of all workloads running in the cluster
@@ -98,14 +98,18 @@ helm install port-k8s-exporter port-labs/port-k8s-exporter \
 > Real-time feedback directly in Port UI
 <img width="1398" height="552" alt="Screenshot from 2026-03-17 22-49-55" src="https://github.com/user-attachments/assets/a8b17c7e-ac2c-4c08-b00b-7c4e409dec4f" />
 
-## 🔮 Future Improvements
+## Evolution
 
-- [ ] Add ArgoCD integration for GitOps-based deployments
-- [ ] Implement Crossplane for cloud resource provisioning
-- [ ] Add Slack notifications on deployment events
-- [ ] Extend scorecards with security and compliance checks
+! This project evolved into [**ai-enhanced-idp**](https://github.com/k-shevtsov/ai-enhanced-idp) with:
+
+- [x] ArgoCD GitOps — App-of-Apps pattern
+- [x] Security scorecards — Claude AI agent, Bronze/Silver/Gold levels
+- [ ] Crossplane — planned for cloud resource provisioning
+- [ ] Slack notifications — planned
 
 ## 👤 Author
 
 **Kostiantyn Shevtsov** — DevOps Engineer  
 [GitHub](https://github.com/k-shevtsov)
+[LinkedIn](https://www.linkedin.com/in/kostiantyn-shevtsov)
+
